@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-namespace BSGame
+namespace BS
 {
     public class EventCenter : MonoBehaviour
     {
