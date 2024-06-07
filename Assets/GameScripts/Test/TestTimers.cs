@@ -7,7 +7,7 @@ public class TestTimers : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BS.Timers.inst.Add(2, 0, TestCallBack,"ÓÄÄ¬");
+        //BS.Timers.inst.Add(2, 0, TestCallBack,"ÓÄÄ¬");
     }
 
     private void Update()
