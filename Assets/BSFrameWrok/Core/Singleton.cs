@@ -1,6 +1,6 @@
 ﻿
 
-	public abstract class ModuleSingleton<T> where T : class, IModule
+	public abstract class Singleton<T> where T : class, IModule
 	{
 		private static T _instance;
 		public static T Instance
@@ -13,7 +13,7 @@
 			}
 		}
 
-		protected ModuleSingleton()
+		protected Singleton()
 		{
 			if (_instance != null)
 				throw new System.Exception($"{typeof(T)} instance already created.");

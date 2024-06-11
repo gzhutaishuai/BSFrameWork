@@ -14,7 +14,7 @@ using YooAsset;
 	/// <summary>
 	/// 资源管理器
 	/// </summary>
-	public sealed class ResourceManager : ModuleSingleton<ResourceManager>, IModule
+	public sealed class ResourceManager : Singleton<ResourceManager>, IModule
 	{
 		private InitializeParameters _createParameters;
 		private ResourcePackage _defaultPackage;
