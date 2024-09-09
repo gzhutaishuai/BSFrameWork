@@ -1,6 +1,6 @@
 using System;
 
-namespace GameFW.Event
+namespace RTSGame.Event
 {
     public static class EventManager 
     {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameFW.Pool
+namespace RTSGame.Pool
 {
     public class SpawnGameobject
     {

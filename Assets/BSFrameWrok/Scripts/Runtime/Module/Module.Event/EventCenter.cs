@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace BS
 {
-    public class EventCenter : MonoBehaviour
+    public class EventCenter
     {
 
         private Dictionary<string, Action<object[]>> events = new Dictionary<string, Action<object[]>>();//所有事件集合
@@ -23,6 +23,8 @@ namespace BS
         {
             get
             {
+                if (_instance == null)
+                    _instance = new EventCenter();
                 return _instance;
             }
         }

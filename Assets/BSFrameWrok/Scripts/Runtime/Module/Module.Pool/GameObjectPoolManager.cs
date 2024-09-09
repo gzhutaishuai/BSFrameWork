@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace GameFW.Pool
+namespace RTSGame.Pool
 {
     /// <summary>
     /// 游戏对象池管理器

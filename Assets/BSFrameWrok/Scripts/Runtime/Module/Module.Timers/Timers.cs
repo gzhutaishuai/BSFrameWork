@@ -104,9 +104,19 @@ namespace BS
             Add(0.001f, 0, callback,callBackParam);
         }
         
-        public void StartCoroutine(IEnumerator routine)
+        //public void StartCoroutine(IEnumerator routine)
+        //{
+        //    _engine.StartCoroutine(routine);
+        //}
+
+        public Coroutine StartCoroutine(IEnumerator routine)
         {
-            _engine.StartCoroutine(routine);
+            return _engine.StartCoroutine(routine);
+        }
+
+        public void StopCoroutine(Coroutine routine)
+        {
+            _engine.StopCoroutine(routine);
         }
 
         public bool Exists(TimerCallback callback)

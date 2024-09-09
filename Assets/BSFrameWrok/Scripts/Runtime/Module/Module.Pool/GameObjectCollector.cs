@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using YooAsset;
 
-namespace GameFW.Pool
+namespace RTSGame.Pool
 {
     public class GameObjectCollector : IEnumerator
     {
