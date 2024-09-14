@@ -10,7 +10,7 @@ public enum Actor_Type
     Builder,//Å©Ãñ
 }
 
-public class Character : MonoBehaviour,IMoveable,IAttackable
+public class Character : MonoBehaviour,IMoveable,IAttackable,IHealthEntity
 {
     #region FSM
     [SerializeField] private CharacterIdleSOBase characterIdleSOBase;
@@ -36,11 +36,22 @@ public class Character : MonoBehaviour,IMoveable,IAttackable
     public Actor_Type actorType;
 
     public Animator animator { get; set; }
+
     public UnitAttack unitAttack { get ; set ; }
+
+
 
     private GameObject _selectedSprite;
 
     [HideInInspector]public AnimationEventListener _aniListener;
+    #endregion
+
+    #region Health
+    public int MaxHealth { get ; set; }
+    public int CurHealth { get; set; }
+    public bool _canIncrease { get; set; }
+    public bool _canDecrease { get; set; }
+    public bool _isDead { get; set; }
     #endregion
     private void Awake()
     {
@@ -103,6 +114,21 @@ public class Character : MonoBehaviour,IMoveable,IAttackable
     public WaitUntil WaitForMesh()
     {
         return new WaitUntil(() => !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        
+    }
+
+    public void Healing(int heal)
+    {
+        
+    }
+
+    public void Die()
+    {
+        
     }
 
     public enum AnimationTriggerType

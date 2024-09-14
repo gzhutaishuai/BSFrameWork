@@ -18,3 +18,4 @@ MonoBehaviour:
   maxGatherCount: 11
   curCarryCount: 0
   builderIndex: -1
+  maxGatherDis: 20

@@ -21,17 +21,96 @@ public class ResourcesManager : MonoSingleton<ResourcesManager>
     RaycastHit hitInfo;
     public  List<ResourcesCount> resources_Types=new List<ResourcesCount>();
 
+    public Dictionary<int,ResourcesEntity> foodState=new Dictionary<int, ResourcesEntity>();
+    public Dictionary<int, ResourcesEntity> stoneState =new Dictionary<int, ResourcesEntity>();
+    public Dictionary<int, ResourcesEntity> goldState =new Dictionary<int, ResourcesEntity>();
+    public Dictionary<int, ResourcesEntity> woodState = new Dictionary<int, ResourcesEntity>();
 
+    public static int ResIndex = 0;
+
+    private void OnEnable()
+    {
+        EventManager.Listen(EEventType.Update_ResState, Update_ResState);
+    }
 
     private void Start()
     {
-        EventManager.Trigger(EEventType.Refresh_Resources,resources_Types);
+        EventManager.Trigger(EEventType.Refresh_ResourcesUI,resources_Types);
+        Initialize();
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Ignore(EEventType.Update_ResState, Update_ResState);
     }
 
     void Update()
     {
         ClickToCollect();
     }
+
+    private void Initialize()
+    {
+        foreach(ResourcesEntity info in this.GetComponentsInChildren<ResourcesEntity>())
+        {
+            info.resIdx = ResIndex;
+            switch (info.resourceInfo.resType)
+            { 
+               case Resources_Type.Wood:
+                    woodState.Add(ResIndex, info);
+                    break;
+               case Resources_Type.Food:
+                    foodState.Add(ResIndex, info);
+                    break;
+                case Resources_Type.Stone:
+                    stoneState.Add(ResIndex, info);
+                    break;
+                case Resources_Type.Gold:
+                    goldState.Add(ResIndex, info);
+                    break;
+            }
+            ResIndex++;
+        }
+        //Debug.Log($"wood:{woodState.Count}");
+        //Debug.Log($"food:{foodState.Count}");
+        //Debug.Log($"stone:{stoneState.Count}");
+        //Debug.Log($"gold:{goldState.Count}");
+    }
+
+    public void Update_ResState(params object[] obj) 
+    {
+        int index = (int)obj[0];
+        ResourcesEntity resourcesEntiy = (ResourcesEntity)obj[1];
+
+        switch(resourcesEntiy.resourceInfo.resType)
+        {
+            case Resources_Type.Wood:
+                if (woodState.TryGetValue(index, out resourcesEntiy))
+                {
+                    woodState.Remove(resourcesEntiy.resIdx);
+                }
+                break;
+            case Resources_Type.Food:
+                if (foodState.TryGetValue(index, out resourcesEntiy))
+                {
+                    foodState.Remove(resourcesEntiy.resIdx);
+                }
+                    break;
+            case Resources_Type.Stone:
+                if (stoneState.TryGetValue(index, out resourcesEntiy))
+                {
+                    stoneState.Remove(resourcesEntiy.resIdx);
+                }
+                    break;
+            case Resources_Type.Gold:
+                if (goldState.TryGetValue(index, out resourcesEntiy))
+                {
+                    goldState.Remove(resourcesEntiy.resIdx);
+                }
+                    break;
+        }
+    }
+
 
     /// <summary>
     /// µã»÷ÊÕ¼¯
@@ -96,6 +175,6 @@ public class ResourcesManager : MonoSingleton<ResourcesManager>
                 resources_Types[i] = resourcesCount1;
             }
         }
-        EventManager.Trigger(EEventType.Refresh_Resources, resources_Types);
+        EventManager.Trigger(EEventType.Refresh_ResourcesUI, resources_Types);
     }
 }

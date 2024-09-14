@@ -1,4 +1,5 @@
 using BS;
+using RTSGame.Event;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ public class BuilderWork : CharacterWorkSOBase
     public int maxGatherCount;//最大采集数量
     public int curCarryCount = 0;//当前携带的资源量
     public int builderIndex = -1;
-
+    public float maxGatherDis;
     private Resources_Type lastGaherRes;
     #endregion
 
@@ -67,9 +68,9 @@ public class BuilderWork : CharacterWorkSOBase
     /// </summary>
     private void Look()
     {
-        if (_resHealth != null && targetBuilding == null)
+        if (_resEntity != null && targetBuilding == null)
         {
-            character.transform.LookAt(_resHealth.transform.position);
+            character.transform.LookAt(_resEntity.transform.position);
         }
         else if (targetBuilding != null)
         {
@@ -77,12 +78,35 @@ public class BuilderWork : CharacterWorkSOBase
         }
     }
 
-    public ResourcesEntity FindNextRes(Resources_Type resType)
+    public ResourcesEntity ResortResPos(Resources_Type resType)
     {
+        List<ResourcesEntity> resList= new List<ResourcesEntity>();
 
+        switch (resType)
+        {
+            case Resources_Type.Wood:
+                foreach(var item in ResourcesManager.Instance.woodState)
+                {
+                    resList.Add(item.Value);
+                }
+                break;
 
+            case Resources_Type.Food:
 
-        return null;
+                break;
+
+            case Resources_Type.Gold:
+
+                break;
+            case Resources_Type.Stone:
+
+                break;
+        }
+        if (resList.Count == 0) return null;
+        resList =resList.OrderBy(b=>Vector3.Distance(character.transform.position,b.transform.position)).ToList();
+        if (Vector3.Distance(resList[0].transform.position, character.transform.position) > maxGatherDis)
+            return null;
+        return resList[0];
     }
 
     /// <summary>
@@ -110,14 +134,15 @@ public class BuilderWork : CharacterWorkSOBase
             }
         }
 
-        if (FindNextRes(lastGaherRes) == null)
+        EventManager.Trigger(EEventType.Update_ResState, _resEntity.resIdx, _resEntity);
+        curTaskCor = null;
+        builderIndex = -1;
+        while(ResortResPos(lastGaherRes) != null)
         {
-            curTaskCor = null;
-            builderIndex = -1;
-        }
-        else
-        {
-            _resEntity = FindNextRes(lastGaherRes);
+            _resEntity = ResortResPos(lastGaherRes);
+            //Debug.Log($"{character.name}:{_resEntity.name}");
+            _resHealth = _resEntity.transform.GetComponent<ResourceHealth>();
+            //Debug.Log(_resEntity.name);
             while (_resEntity)
             {
                 curTaskCor = Timers.inst.StartCoroutine(StartAttack());
@@ -129,6 +154,13 @@ public class BuilderWork : CharacterWorkSOBase
                     yield return curTaskCor;
                 }
             }
+            EventManager.Trigger(EEventType.Update_ResState, _resEntity.resIdx, _resEntity);
+        }
+        curTaskCor =null;
+        builderIndex=-1;
+        if(curTaskCor==null&&_resEntity==null)
+        {
+            character.stateMachine.ChangeState(character.idleSate);
         }
     }
 
@@ -143,7 +175,6 @@ public class BuilderWork : CharacterWorkSOBase
         {
             if (_resEntity != null && curCarryCount < maxGatherCount)
             {
-                character.animator.SetTrigger("Attack");
                 character.animator.SetBool("Attack1", true);
             }
             else
@@ -283,6 +314,7 @@ public class BuilderWork : CharacterWorkSOBase
     public override void DoExitLogic()
     {
         base.DoExitLogic();
+        //Debug.Log("Exit Work");
         character._aniListener.attackEvent.RemoveListener(GatherAttack);
     }
 
@@ -290,6 +322,7 @@ public class BuilderWork : CharacterWorkSOBase
     {
         base.DoFrameUpdateLogic();
         Look();
+
     }
 
     public override void DoPhysicsUpdateLogic()
@@ -316,7 +349,7 @@ public class BuilderWork : CharacterWorkSOBase
         {
             Timers.inst.StopCoroutine(curTaskCor);
         }
-
+        character.animator.SetBool("Attack1", false);
         _resEntity =null;
         _resHealth = null;
         targetBuilding = null;

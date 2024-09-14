@@ -21,12 +21,12 @@ public class ResourcesUI : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Listen(EEventType.Refresh_Resources, ReFreshResourceUI);
+        EventManager.Listen(EEventType.Refresh_ResourcesUI, ReFreshResourceUI);
     }
 
     private void OnDisable()
     {
-        EventManager.Ignore(EEventType.Refresh_Resources, ReFreshResourceUI);
+        EventManager.Ignore(EEventType.Refresh_ResourcesUI, ReFreshResourceUI);
     }
 
     private void ReFreshResourceUI(params object[] obj) 

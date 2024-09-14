@@ -21,7 +21,7 @@ public class ResourceHealth : MonoBehaviour, IResourceHealth
 
     private void Start()
     {
-        
+        CurHealth=MaxHealth;
     }
 
     private void OnEnable()

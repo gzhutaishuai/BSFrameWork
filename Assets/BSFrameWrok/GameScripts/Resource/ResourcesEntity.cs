@@ -20,9 +20,9 @@ public class ResourcesEntity : MonoBehaviour
     public ResourceInfoSO resourceInfoSO;
     [HideInInspector]public ResourceInfoSO resourceInfo;
     public List<Transform> workPosition=new List<Transform>();//暴露在窗口的位置，需要手动添加位置
-    /*[HideInInspector]*/public List<WorkPos> workPosList = new List<WorkPos>();//记录采集位置和农民
-    
-    
+    [HideInInspector] public List<WorkPos> workPosList = new List<WorkPos>();//记录采集位置和农民
+
+    public int resIdx; 
     private void Awake()
     {
         resourceInfo=Instantiate(resourceInfoSO);

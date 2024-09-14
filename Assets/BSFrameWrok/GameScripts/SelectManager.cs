@@ -16,6 +16,7 @@ public class SelectManager : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             hit=Utility.ClickToDo();
+            if (hit.collider == null) return;
             if (!hit.collider.CompareTag("Terrain")&& !hit.collider.CompareTag("Actor"))
             {
                 if(hit.collider.transform.TryGetComponent(out Outline line))

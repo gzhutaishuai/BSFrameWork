@@ -1,3 +1,4 @@
+using RTSGame.Event;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,11 +26,12 @@ public struct StraightLine
 
 public class ActorManager : MonoSingleton<ActorManager>
 {
-    //private List<Actor> _allActors = new List<Actor>();//所有角色
-    //[SerializeField]public List<Actor> selectActors=new List<Actor>();//框选中的角色
-
     private List<Character> _allActors = new List<Character>();//所有角色
     [SerializeField] public List<Character> selectActors = new List<Character>();//框选中的角色
+
+    public static int curActorsCount = 0;
+    public static int MaxActorsCount = 4;
+    public static bool canAdd = true;
 
     #region Draw
     private LineRenderer _line;
@@ -57,6 +59,7 @@ public class ActorManager : MonoSingleton<ActorManager>
     private void Start()
     {
         _allActors.AddRange(GetComponentsInChildren<Character>());
+        EventManager.Trigger(EEventType.Update_population, _allActors.Count, 0);
     }
 
     private void Update()
@@ -66,6 +69,9 @@ public class ActorManager : MonoSingleton<ActorManager>
         ClickToMove();
     }
 
+    /// <summary>
+    /// 点击移动
+    /// </summary>
     private void ClickToMove()
     {
         if (selectActors.Count == 0)

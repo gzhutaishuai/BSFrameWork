@@ -10,6 +10,12 @@ namespace RTSGame.Event
         Attack_Event,
 
         //刷新资源UI
-        Refresh_Resources
+        Refresh_ResourcesUI,
+
+        //重新获取所有资源状态
+        Update_ResState,
+
+        //刷新当前人口/最大人口UI
+        Update_population
     }
 }
